@@ -11,7 +11,8 @@ class Student:
         self.finished_courses.append(course_name)
 
     def rate_lectures(self, lecturer, course, grade):
-        if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
+        if isinstance(lecturer,
+                      Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
             if course in lecturer.grades:
                 lecturer.grades[course] += [grade]
             else:
@@ -105,6 +106,9 @@ cool_reviewer = Reviewer('Some', 'Buddy')
 cool_reviewer.courses_attached += ['Python']
 cool_reviewer.courses_attached += ['Git']
 
+second_reviewer = Reviewer('David', 'Jones')
+second_reviewer.courses_attached += ['Git']
+
 super_lecturer = Lecturer('Bill', 'Smith')
 super_lecturer.courses_attached += ['Python']
 
@@ -114,12 +118,12 @@ lecturer_git.courses_attached += ['Git']
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Git', 9)
-cool_reviewer.rate_hw(best_student, 'Git', 9)
-cool_reviewer.rate_hw(best_student, 'Git', 8)
+second_reviewer.rate_hw(best_student, 'Git', 9)
+second_reviewer.rate_hw(best_student, 'Git', 9)
+second_reviewer.rate_hw(best_student, 'Git', 8)
 
 cool_reviewer.rate_hw(second_student, 'Python', 9)
-cool_reviewer.rate_hw(second_student, 'Python', 9)
+cool_reviewer.rate_hw(second_student, 'Python', 7)
 cool_reviewer.rate_hw(second_student, 'Python', 9)
 
 print(best_student.grades)
@@ -128,7 +132,7 @@ print()
 
 best_student.rate_lectures(super_lecturer, 'Python', 10)
 best_student.rate_lectures(super_lecturer, 'Python', 10)
-best_student.rate_lectures(super_lecturer, 'Python', 7)
+best_student.rate_lectures(super_lecturer, 'Python', 9)
 best_student.rate_lectures(lecturer_git, 'Git', 10)
 best_student.rate_lectures(lecturer_git, 'Git', 10)
 best_student.rate_lectures(lecturer_git, 'Git', 10)
@@ -145,3 +149,36 @@ print()
 
 print(best_student > second_student)
 print(super_lecturer > lecturer_git)
+
+
+def average_rate_hw(student_list, course):
+
+    rate_hw_list = []
+
+    for student in student_list:
+        if not course in student.courses_in_progress:
+            continue
+        else:
+            rate_hw_list.extend(student.grades[course])
+
+    return round(sum(rate_hw_list) / len(rate_hw_list), 1)
+
+
+def average_rate_lectur(lectur_list, course):
+
+    rate_lectur_list = []
+
+    for lectur in lectur_list:
+        if not course in lectur.courses_attached:
+            continue
+        else:
+            rate_lectur_list.extend(lectur.grades[course])
+
+    return round(sum(rate_lectur_list) / len(rate_lectur_list), 1)
+
+
+student_list = [best_student, second_student]
+print(average_rate_hw(student_list, 'Git'))
+
+lectur_list = [super_lecturer, lecturer_git]
+print(average_rate_lectur(lectur_list, 'Git'))
